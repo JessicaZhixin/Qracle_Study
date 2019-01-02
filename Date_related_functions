@@ -1,0 +1,45 @@
+1. to_date(char, 'fmt') 将char格式的日期转化为date格式
+   to_char(datetime[,'fmt'[,'NLS_DATE_LANGUAGE = American']]) 将date格式转为char
+   
+   eg. to_date('20181031','yyyyddmm') 
+         --2018/10/31
+       to_date('2006-05-01 19:25:34', 'YYYY-MM-DD HH24:MI:SS')
+         --2006/5/1 19:25:34
+       to_char(sysdate,'yyyymmdd w hh:mi:ss')
+         --20190102 1 02:28:47
+       TO_DATE('January 15, 1989, 11:00 A.M.',
+               'Month dd, YYYY, HH:MI A.M.',
+               'NLS_DATE_LANGUAGE = American') 
+          --1989/1/15 11:00:00
+
+       
+       
+2. trunc(date[,fmt]) 返回当前
+   
+   eg. trunc(sysdate,'q') 返回
+    
+
+
+
+备注：
+日期格式: fmt
+格式控制 描述 
+YYYY、YYY、YY 分别代表4位、3位、2位的数字年 
+YEAR 年的拼写 
+MM 数字月 
+MONTH 月的全拼 
+MON 月的缩写 
+DD 数字日 
+DAY 星期的全拼 
+DY 星期的缩写 
+AM 表示上午或者下午 
+HH24、HH12 12小时制或24小时制 
+MI 分钟 
+SS 秒钟 
+SP 数字的拼写 
+TH 数字的序数词
+--------------------- 
+作者：pj小小码农 
+来源：CSDN 
+原文：https://blog.csdn.net/qq_20989105/article/details/76190566 
+版权声明：本文为博主原创文章，转载请附上博文链接！
