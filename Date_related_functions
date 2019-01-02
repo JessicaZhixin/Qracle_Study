@@ -1,7 +1,9 @@
+select sysdate from dual; --返回系统当前时间
+
 1. to_date(char, 'fmt') 将char格式的日期转化为date格式
    to_char(datetime[,'fmt'[,'NLS_DATE_LANGUAGE = American']]) 将date格式转为char
    
-   eg. to_date('20181031','yyyyddmm') 
+   eg. to_date('20181031','yyyyddmm')
          --2018/10/31
        to_date('2006-05-01 19:25:34', 'YYYY-MM-DD HH24:MI:SS')
          --2006/5/1 19:25:34
@@ -11,25 +13,79 @@
                'Month dd, YYYY, HH:MI A.M.',
                'NLS_DATE_LANGUAGE = American') 
           --1989/1/15 11:00:00
+       TO_CHAR(SYSDATE, 'DDD')
+          --今天是今年的第N天
+       select to_char(sysdate, 'yyyy') from dual; --当前年 
+       select to_char(sysdate, 'Q' ) from dual; --当前季度
+       select to_char(sysdate, 'mm') from dual; --当前月 
+       select to_char(sysdate, 'dd') from dual; --当前日
+       select to_char(sysdate, 'day') from dual;  --当前星期
+       nls：
+            alter session set NLS_DATE_FORMAT='YYYY-MM-DD HH24:MI:SS' 
+               --在date类型的字段上面建立了索引
 
        
-       
-2. trunc(date[,fmt]) 返回当前
+2. trunc(date[,fmt]) 截取当前fmt的起始时点
    
-   eg. trunc(sysdate,'q') 返回
-    
+   eg. trunc(sysdate), 'yyyymmdd hh:mi:ss' --返回当前天的0时0分0秒
+       trunc(sysdate, 'mm') --返回本月的第一天
+       trunc(sysdate,'q') --返回当前季度的第一天
+       trunc(sysdate, 'y') --返回一年的第一天 
+       trunc(sysdate) + 1
+         --返回明天的0时0分0秒
+       select trunc(sysdate) + 1 / 24 from dual; 
+         --返回小时的具体数值
+         --2019/1/2 1:00:00
+       select trunc(sysdate) + 7 / 24 from dual; 
+         --2019/1/2 7:00:00
+       select trunc(sysdate) + 0.99999 from dual;
+         --返回这天的最后一秒
+         --2019/1/2 23:59:59
+       select trunc(sysdate, 'yyyy') + rn - 1 date_in_year
+         from (select rownum rn from all_objects where rownum < 366) t;
+         --返回一年的每一天 
 
 
+3. last_day(date) 返回当前月份的最后一天
+
+   eg. SELECT last_day(to_date('20190102','yyyymmdd')) FROM DUAL; --2019/1/31
+   
+
+4. add_month(date,integer) 返回integer个月之后的日期
+
+   eg. add_months(sysdate, +3)
+         --2019/4/2 14:54:40
+       add_months(TRUNC(SYSDATE, 'Q'), +3) 
+         --返回三个月后的那个季度的第一天
+         --2019/4/1
+       add_months(sysdate, 24)
+         --两年后的今天
+
+
+实际运用小栗子：
+   eg. 判断闰年
+         select decode(to_char(add_months(trunc(sysdate,'year'),2)-1,'dd'),'29','闰年','平年') from dual;
+       
 
 备注：
 日期格式: fmt
+--------------------- 
+作者：pj小小码农 
+来源：CSDN 
+原文：https://blog.csdn.net/qq_20989105/article/details/76190566 
+版权声明：本文为博主原创文章，转载请附上博文链接！
+（部分修改）
+
 格式控制 描述 
 YYYY、YYY、YY 分别代表4位、3位、2位的数字年 
 YEAR 年的拼写 
 MM 数字月 
 MONTH 月的全拼 
 MON 月的缩写 
+W 当前月的第几周
 DD 数字日 
+DDD 得到今天是今年的第几天
+D 星期的第几天（周日为第一天）
 DAY 星期的全拼 
 DY 星期的缩写 
 AM 表示上午或者下午 
@@ -38,8 +94,5 @@ MI 分钟
 SS 秒钟 
 SP 数字的拼写 
 TH 数字的序数词
---------------------- 
-作者：pj小小码农 
-来源：CSDN 
-原文：https://blog.csdn.net/qq_20989105/article/details/76190566 
-版权声明：本文为博主原创文章，转载请附上博文链接！
+详见：https://docs.oracle.com/cd/B19306_01/server.102/b14200/functions230.htm#i1002084
+
