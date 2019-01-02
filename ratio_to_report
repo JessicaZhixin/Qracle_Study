@@ -1,0 +1,4 @@
+ratio_to_report () over ([partition by ]) 
+  根据分组进行比例计算，分别计算每一行在特定分组中的占比
+  
+over()不加partition by的时候则表示总量百分比
