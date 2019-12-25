@@ -1,0 +1,3 @@
+select regexp_substr('你要替换的内容', '[^我是分隔符]+', 1, level))
+  from dual
+connect by level <= regexp_count('', '我是分隔符')
