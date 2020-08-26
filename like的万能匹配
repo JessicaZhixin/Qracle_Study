@@ -1,0 +1,1 @@
+like '%'||regexp_replace(regexp_replace(replace({?I_PROD_NAME?},'-','%'),'(.)','\1%'),'.$','')||'%'
